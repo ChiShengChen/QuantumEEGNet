@@ -43,7 +43,8 @@ The **BCI Competition IV 2a** dataset was used for evaluation, featuring EEG sig
 - **Classes**: Right hand, left hand, feet, tongue  
 - **Preprocessing**: Downsampled to 128 Hz, band-pass filtered (4-38 Hz).  
 
-For more details, refer to the [dataset documentation](https://www.bbci.de/competition/iv/).
+For more details, refer to the [dataset documentation](https://www.bbci.de/competition/iv/).  
+Or you can use the orgnized data format in https://github.com/CECNL/MAtt repo.  
 
 ---
 
