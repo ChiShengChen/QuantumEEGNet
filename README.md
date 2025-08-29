@@ -399,6 +399,18 @@ If you find this work useful, please cite our paper:
   year={2024}
 }
 ```
+```bibtex
+@INPROCEEDINGS{10768221,
+  author={Chen, Chi-Sheng and Chen, Samuel Yen-Chi and Tsai, Aidan Hung-Wen and Wei, Chun-Shu},
+  booktitle={2024 IEEE Workshop on Signal Processing Systems (SiPS)}, 
+  title={QEEGNet: Quantum Machine Learning for Enhanced Electroencephalography Encoding}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={153-158},
+  keywords={Quantum computing;Neuroscience;Computational modeling;Computer architecture;Brain modeling;Electroencephalography;Robustness;Encoding;Space exploration;Biological neural networks;electroencephalography;EEG classification;quantum machine learning;quantum algorithm;deep learning;brain-computer interface},
+  doi={10.1109/SiPS62058.2024.00035}}
+```
 
 ## Contributing
 
