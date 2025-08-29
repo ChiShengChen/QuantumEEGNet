@@ -35,7 +35,9 @@ class QuantumLayer(nn.Module):
             # Apply variational layers
             for j in range(n_layers):
                 # Entangle qubits using CNOT gates in ring pattern
-                qml.broadcast(qml.CNOT, wires=range(n_qubits), pattern="ring")
+                for i in range(n_qubits):
+                    qml.CNOT(wires=[i, (i + 1) % n_qubits])
+                
                 # Apply rotation gates
                 for i in range(n_qubits):
                     qml.RY(weights[j, i], wires=i)

@@ -188,7 +188,22 @@ class SyntheticDataset:
     Synthetic dataset for testing and development.
     
     This class generates synthetic EEG-like data for testing the models
-    without requiring the actual BCI dataset.
+    without requiring the actual BCI dataset. The synthetic data simulates
+    real EEG signals with class-dependent frequency patterns.
+    
+    Features:
+    - Artificial EEG-like signals with configurable parameters
+    - Class-dependent frequency patterns (10Hz, 15Hz, 20Hz, etc.)
+    - Realistic data structure matching real EEG format
+    - Fast generation for development and testing
+    
+    Usage:
+        dataset = SyntheticDataset(num_samples=1000, num_classes=2)
+        train_loader, valid_loader, test_loader = dataset.get_dataloaders()
+    
+    Note:
+        This is for development purposes only. For final evaluation,
+        use the real BCI Competition IV 2a dataset.
     """
     
     def __init__(self, num_samples: int = 1000, num_channels: int = 2, 

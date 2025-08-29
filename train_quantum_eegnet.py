@@ -151,10 +151,15 @@ def main():
     
     # Create model
     print(f"\nCreating {args.model} model...")
+    
+    # Filter out non-model parameters
+    model_params = {k: v for k, v in config.model_config.items() 
+                   if k not in ['model_name']}
+    
     if args.model == 'quantum':
-        model = QuantumEEGNet(**config.model_config)
+        model = QuantumEEGNet(**model_params)
     else:
-        model = ClassicalEEGNet(**config.model_config)
+        model = ClassicalEEGNet(**model_params)
     
     print(f"Model info: {model.get_model_info()}")
     print(f"Total parameters: {model.count_parameters():,}")

@@ -96,6 +96,8 @@ QuantumEEGNet/
 
 #### `src/data/`
 - `dataset.py`: Dataset classes for BCI and synthetic data with preprocessing
+  - `BCIDataset`: Loads and preprocesses BCI Competition IV 2a dataset
+  - `SyntheticDataset`: Generates artificial EEG-like data for development and testing
 
 #### `src/training/`
 - `trainer.py`: Training manager with comprehensive training utilities
@@ -164,6 +166,22 @@ These files can be used as reference but the new structure is recommended for:
 4. **Extensibility**: Easy to add new models, datasets, or training features
 5. **Documentation**: Better organized code is easier to document
 6. **Collaboration**: Multiple developers can work on different modules simultaneously
+
+## Dataset Support
+
+### BCI Competition IV 2a Dataset
+- **Purpose**: Real EEG data for final evaluation and research
+- **Format**: MATLAB (.mat) files with preprocessed EEG signals
+- **Classes**: 4 motor imagery tasks (right hand, left hand, feet, tongue)
+- **Subjects**: 9 subjects with training and evaluation data
+- **Usage**: For production-ready model evaluation and research publications
+
+### Synthetic Dataset
+- **Purpose**: Artificial EEG-like data for development and testing
+- **Generation**: Programmatically created with class-dependent frequency patterns
+- **Features**: Configurable parameters (samples, channels, time points, classes)
+- **Advantages**: Fast generation, no download required, reproducible results
+- **Usage**: For code development, debugging, and parameter optimization
 
 ## Future Enhancements
 

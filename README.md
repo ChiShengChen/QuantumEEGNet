@@ -337,6 +337,8 @@ with torch.no_grad():
 
 ## Dataset
 
+### BCI Competition IV 2a Dataset
+
 The **BCI Competition IV 2a** dataset was used for evaluation, featuring EEG signals from motor-imagery tasks.  
 - **Subjects**: 9  
 - **Classes**: Right hand, left hand, feet, tongue  
@@ -344,6 +346,114 @@ The **BCI Competition IV 2a** dataset was used for evaluation, featuring EEG sig
 
 For more details, refer to the [dataset documentation](https://www.bbci.de/competition/iv/).  
 Or you can use the organized data format in https://github.com/CECNL/MAtt repo.
+
+### Synthetic Dataset
+
+For rapid testing and development, we provide a **synthetic EEG dataset** that simulates real EEG signals without requiring the actual BCI dataset.
+
+#### Features
+
+- **Artificial EEG-like signals** with class-dependent frequency patterns
+- **Configurable parameters**: number of samples, channels, time points, and classes
+- **Realistic structure**: follows the same format as real EEG data
+- **Fast generation**: no need to download large datasets
+
+#### Generation Process
+
+The synthetic data is generated using the following approach:
+
+1. **Base Data**: Random noise serves as the foundation
+   ```python
+   x = torch.randn(samples, 1, channels, time_points)
+   ```
+
+2. **Class Labels**: Random assignment of class labels
+   ```python
+   y = torch.randint(0, num_classes, (samples,))
+   ```
+
+3. **Class-dependent Patterns**: Each class gets a unique frequency signature
+   ```python
+   for class_i in range(num_classes):
+       freq = 10 + class_i * 5  # Class 0: 10Hz, Class 1: 15Hz, etc.
+       pattern = torch.sin(freq * time_axis)
+       x[class_mask] += 0.1 * pattern
+   ```
+
+#### Data Characteristics
+
+- **Shape**: `(batch_size, 1, channels, time_points)`
+  - `batch_size`: Number of samples in batch
+  - `1`: Single channel dimension (EEG format)
+  - `channels`: Number of electrodes (default: 2)
+  - `time_points`: Number of time points (default: 128)
+
+- **Class Patterns**:
+  - Class 0: 10Hz sinusoidal pattern + noise
+  - Class 1: 15Hz sinusoidal pattern + noise
+  - Class 2: 20Hz sinusoidal pattern + noise
+  - And so on...
+
+#### Usage
+
+```python
+from src import SyntheticDataset
+
+# Create synthetic dataset
+dataset = SyntheticDataset(
+    num_samples=1000,      # Total samples
+    num_channels=2,        # Number of EEG channels
+    time_points=128,       # Time series length
+    num_classes=2,         # Number of classes
+    validation_ratio=0.2   # Validation split ratio
+)
+
+# Get data loaders
+train_loader, valid_loader, test_loader = dataset.get_dataloaders(batch_size=64)
+
+# Get dataset information
+info = dataset.get_data_info()
+print(f"Train samples: {info['train_samples']}")
+print(f"Valid samples: {info['valid_samples']}")
+print(f"Test samples: {info['test_samples']}")
+print(f"Class distribution: {info['class_distribution']}")
+```
+
+#### When to Use Synthetic Data
+
+**✅ Recommended for:**
+- Code development and debugging
+- Model architecture testing
+- Hyperparameter optimization
+- Learning and tutorials
+- Quick prototyping
+
+**❌ Not suitable for:**
+- Final performance evaluation
+- Research publications
+- Production deployment
+
+#### Advantages
+
+1. **Fast Testing**: No need to download large datasets
+2. **Controllable**: Can control data characteristics and distribution
+3. **Reproducible**: Consistent results across runs
+4. **Development-friendly**: Ideal for code debugging and parameter testing
+
+#### Limitations
+
+1. **Simplified**: Much simpler than real EEG signals
+2. **Artificial**: Cannot fully simulate real brain activity patterns
+3. **Performance**: Training results don't represent real-world performance
+
+#### Switching to Real Data
+
+When ready for serious evaluation, switch to the BCI dataset:
+
+```bash
+# Use BCI dataset instead of synthetic
+python train_quantum_eegnet.py --dataset bci --subject 1 --epochs 100
+```
 
 ## Configuration
 

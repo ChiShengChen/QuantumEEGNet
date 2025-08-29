@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pennylane as qml
 
-# 定義量子層
+# define quantum layer
 class QuantumLayer(nn.Module):
     def __init__(self, n_qubits, n_layers):
         super(QuantumLayer, self).__init__()
@@ -28,7 +28,7 @@ class QuantumLayer(nn.Module):
     def forward(self, x):
         return self.q_layer(x)
 
-# 定義量子EEGNet
+# define quantum EEGNet
 class QuantumEEGNet(nn.Module):
     def __init__(self, F1=8, D=2, F2=16, dropout_rate=0.25, num_classes=2, n_qubits=4, n_layers=2):
         super(QuantumEEGNet, self).__init__()
@@ -39,27 +39,27 @@ class QuantumEEGNet(nn.Module):
         self.dropout_rate = dropout_rate
         self.num_classes = num_classes
 
-        # 第一層卷積層
+        # first convolution layer
         self.conv1 = nn.Conv2d(1, F1, (1, 64), padding=(0, 32), bias=False)
         self.batchnorm1 = nn.BatchNorm2d(F1)
 
-        # 深度卷積層
+        # depthwise convolution layer
         self.conv2 = nn.Conv2d(F1, F1 * D, (2, 1), groups=F1, bias=False)
         self.batchnorm2 = nn.BatchNorm2d(F1 * D)
 
-        # 可分離卷積層
+        # separable convolution layer
         self.conv3 = nn.Conv2d(F1 * D, F1 * D, (1, 16), padding=(0, 8), bias=False)
         self.batchnorm3 = nn.BatchNorm2d(F1 * D)
         self.conv4 = nn.Conv2d(F1 * D, F2, (1, 1), bias=False)
         self.batchnorm4 = nn.BatchNorm2d(F2)
 
-        # 量子層
+        # quantum layer
         self.quantum_layer = QuantumLayer(n_qubits, n_layers)
 
-        # 全連接層
+        # fully connected layer
         self.fc1 = nn.Linear(F2 * n_qubits, num_classes)
         
-        # Dropout層
+        # dropout layer
         self.dropout = nn.Dropout(dropout_rate)
 
     def forward(self, x):
@@ -81,7 +81,7 @@ class QuantumEEGNet(nn.Module):
         x = F.avg_pool2d(x, (1, 8))
         x = self.dropout(x)
         
-        # 量子層
+        # quantum layer
         x = x.view(x.size(0), x.size(1), -1)
         x = torch.cat([self.quantum_layer(x[:, i, :]) for i in range(x.size(1))], dim=1)
         
@@ -89,7 +89,7 @@ class QuantumEEGNet(nn.Module):
         
         return x
 
-# Example usage:
+# example usage:
 if __name__ == "__main__":
     model = QuantumEEGNet(num_classes=2, n_qubits=4, n_layers=2)
     print(model)
